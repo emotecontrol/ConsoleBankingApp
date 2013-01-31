@@ -12,6 +12,7 @@ namespace Assignment1
         
         static void Main(string[] args)
         {
+            // this is just some tests for the address converter.  It'll get removed eventually.
             StreetAddressConverter lookup = new StreetAddressConverter();
             string alley = lookup.convertToAbbr("alley");
             Console.WriteLine(alley);
