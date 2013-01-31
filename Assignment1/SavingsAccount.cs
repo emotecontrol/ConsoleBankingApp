@@ -131,6 +131,7 @@ namespace Assignment1
             oldBalance = balance;
             balance += (deposit + withdrawal);
             deposit = 0;
+            withdrawal = 0;
             
         }
     }
