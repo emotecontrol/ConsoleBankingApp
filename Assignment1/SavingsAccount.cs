@@ -16,7 +16,8 @@ namespace Assignment1
         double interest,
             balance,
             deposit,
-            oldBalance;
+            oldBalance,
+            withdrawal;
 
         public SavingsAccount()
         {
@@ -110,11 +111,25 @@ namespace Assignment1
                 return balance;
             }
         }
-
+        
+        public void makeDeposit(double newDeposit)
+        {
+            deposit += newDeposit;
+            // remember that the balance does not get automatically updated!
+        }
+        
+        public void makeWithdrawal(double newWithdrawal)
+        {
+            withdrawal -= newWithdrawal;
+            // remember that the balance does not get automatically updated!
+        }
+        
+        
         public void updateBalance()
+        // updates the balance to reflect the deposits and withdrawls being made.
         {
             oldBalance = balance;
-            balance += deposit;
+            balance += (deposit + withdrawal);
             deposit = 0;
             
         }
