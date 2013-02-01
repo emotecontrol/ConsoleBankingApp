@@ -10,9 +10,11 @@ namespace Assignment1
         string firstName,
             lastName,
             streetName,
-            streetType;
-        int socialInsurance,
+            streetType,
+            rroute,
+            rrStation,
             streetNumber;
+        int socialInsurance;
         double interest,
             balance,
             deposit,
@@ -82,7 +84,7 @@ namespace Assignment1
                 socialInsurance = value;
             }
         }
-        public int StreetNumber
+        public string StreetNumber
         {
             get
             {
@@ -93,6 +95,31 @@ namespace Assignment1
                 streetNumber = value;
             }
         }
+
+        public string Rroute
+        {
+            get
+            {
+                return rroute;
+            }
+            set
+            {
+                rroute = value;
+            }
+        }
+
+        public string RrStation
+        {
+            get
+            {
+                return rrStation;
+            }
+            set
+            {
+                rrStation = value;
+            }
+        }
+
         public double Interest
         {
             get

@@ -10,7 +10,7 @@ namespace Assignment1
         // list of abbreviations adapted from:
         // https://www.usps.com/send/official-abbreviations.htm#2
 
-        List<string[]> postalList = new List<string[]>()
+        static List<string[]> postalList = new List<string[]>()
         {
             new string[3] {"alley", "ally", "aly"},
             new string[3] {"annex", "anex", "anx"},
