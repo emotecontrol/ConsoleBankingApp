@@ -295,36 +295,12 @@ namespace Assignment1
 
         };
         
-        //public void initList()
-        //{
-        //    for (int i = 0; i < postalArray.Length; i++)
-        //    {
-        //        postal.Add(postalArray[i]);
-        //    }
-        //}
-
-        //public List<string[]> initList(){
-            
-        //    for (int i=0; i<= 100; i++){
-        //    postal[i] = postalArray.Clone();
-        //    }
+        
         public StreetAddressConverter()
         {
-            //initList();
+           
         }
         
-        //private bool matchInPostal(string[] abbr, string findMe){
-        //    findMe = findMe.ToLower();
-        //    if (abbr[0] ==  findMe || abbr[1] == findMe || abbr[2] == findMe)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-
         public string convertToAbbr(string address)
         {
             address = address.ToLower();

@@ -20,6 +20,10 @@ namespace Assignment1
             filename = file;
         }
         public void Save(List<SavingsAccount> listToSave){
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
             string output = JsonConvert.SerializeObject(listToSave);
             using (FileStream fs = File.Open(filename, FileMode.OpenOrCreate))
             {
