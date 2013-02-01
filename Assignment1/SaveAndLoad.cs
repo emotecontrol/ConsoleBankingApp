@@ -27,9 +27,12 @@ namespace Assignment1
             }
         }
 
+        // the follewing I/O section is based on some msdn tutorials I found for reading/writing 
+        // data, particularly: http://msdn.microsoft.com/en-us/library/system.io.filestream.aspx
+
         public List<SavingsAccount> Load()
         {
-            string openCharacterListJson = null;
+            string openAccountListJson = null;
             List<SavingsAccount> newlist;
             using (FileStream fs = File.Open(filename, FileMode.Open))
             {
@@ -39,10 +42,10 @@ namespace Assignment1
                 while (fs.Read(b, 0, b.Length) > 0) // while the buffer created by the FileStream is bigger than 0
                                                     // i.e. there are still characters in the stream...
                 {
-                    openCharacterListJson += temp.GetString(b); // add the byte array to the list string in UTF8 encoding
+                    openAccountListJson += temp.GetString(b); // add the byte array to the list string in UTF8 encoding
                 }
             }
-            newlist = JsonConvert.DeserializeObject<List<SavingsAccount>>(openCharacterListJson);
+            newlist = JsonConvert.DeserializeObject<List<SavingsAccount>>(openAccountListJson);
             return newlist;
         }
         
