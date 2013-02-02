@@ -72,10 +72,9 @@ namespace Assignment1
                     Console.WriteLine("\nYou entered {0}.  Is this correct? Y/N", newCust.FirstName);
                     while (askYN == false)
                     {
-                        ConsoleKeyInfo keyYN = Console.ReadKey();
+                        ConsoleKeyInfo keyYN = Console.ReadKey(true);
                         string strYN = keyYN.Key.ToString();
-                        //int getYN;
-                        //int.TryParse(strYN, out getYN);
+                        
                         if (strYN == "y" || strYN == "Y")
                         {
                             askYN = true;
@@ -113,10 +112,9 @@ namespace Assignment1
                     Console.WriteLine("\nYou entered {0}.  Is this correct? Y/N", newCust.LastName);
                     while (askYN == false)
                     {
-                        ConsoleKeyInfo keyYN = Console.ReadKey();
+                        ConsoleKeyInfo keyYN = Console.ReadKey(true);
                         string strYN = keyYN.Key.ToString();
-                        //int getYN;
-                        //int.TryParse(strYN, out getYN);
+                        
                         if (strYN == "y" || strYN == "Y")
                         {
                             askYN = true;
@@ -175,13 +173,12 @@ namespace Assignment1
                             if (splitAddress[0] != null && splitAddress[1] != null && splitAddress[2] != null
                                 && splitRR[0] != null && splitRR[1] != null)
                             {
+                                // Assign address parts to the SavingsAccount object
                                 newCust.StreetNumber = splitAddress[0];
                                 newCust.StreetName = splitAddress[1];
                                 StreetAddressConverter convert = new StreetAddressConverter();
-                                Console.WriteLine(convert.convertToAbbr("Street"));
-                                string convertme = splitAddress[2];
-                                string streetAbbr = convert.convertToAbbr(convertme);
-                                newCust.StreetType = streetAbbr;
+                                
+                                newCust.StreetType = convert.convertToAbbr(splitAddress[2]);
                                 newCust.Rroute = splitRR[0];
                                 newCust.RrStation = splitRR[1];
                                 strAddress = true;
