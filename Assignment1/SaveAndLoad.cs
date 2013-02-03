@@ -19,6 +19,11 @@ namespace Assignment1
         {
             filename = file;
         }
+
+        // the follewing I/O section is based on some msdn tutorials I found for reading/writing 
+        // data, particularly: http://msdn.microsoft.com/en-us/library/system.io.filestream.aspx
+        
+        
         public void Save(List<SavingsAccount> listToSave){
             if (File.Exists(filename))
             {
@@ -30,9 +35,6 @@ namespace Assignment1
                 AddText(fs, output);
             }
         }
-
-        // the follewing I/O section is based on some msdn tutorials I found for reading/writing 
-        // data, particularly: http://msdn.microsoft.com/en-us/library/system.io.filestream.aspx
 
         public List<SavingsAccount> Load()
         {
@@ -49,7 +51,7 @@ namespace Assignment1
                     openAccountListJson += temp.GetString(b); // add the byte array to the list string in UTF8 encoding
                 }
             }
-            newlist = JsonConvert.DeserializeObject<List<SavingsAccount>>(openAccountListJson);
+            newlist = JsonConvert.DeserializeObject<List<SavingsAccount>>(openAccountListJson); // Deserialize the Json string to a List<SavingsAccount> object
             return newlist;
         }
         

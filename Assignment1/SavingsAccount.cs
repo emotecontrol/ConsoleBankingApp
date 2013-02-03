@@ -19,11 +19,12 @@ namespace Assignment1
             balance,
             deposit,
             oldBalance,
-            withdrawal;
+            withdrawal,
+            futureBalance;
 
         public SavingsAccount()
         {
-                
+            
              
         }
 
@@ -138,7 +139,27 @@ namespace Assignment1
                 return balance;
             }
         }
-        
+
+        public double FutureBalance
+        {
+            get
+            {
+                return futureBalance;
+            }
+            set
+            {
+                if (interest != 0)
+                {
+                    futureBalance = value * Math.Pow((1 + interest / 12), 12);
+                }
+                else
+                {
+                    futureBalance = value;
+                }
+            }
+        }
+
+
         public void makeDeposit(double newDeposit)
         {
             deposit += newDeposit;
