@@ -140,6 +140,7 @@ namespace Assignment1
             }
         }
 
+        
         public double FutureBalance
         {
             get
@@ -148,7 +149,7 @@ namespace Assignment1
             }
             set
             {
-                if (interest != 0)
+                if (interest != 0) 
                 {
                     futureBalance = value * Math.Pow((1 + interest / 12), 12);
                 }
@@ -178,6 +179,7 @@ namespace Assignment1
         {
             oldBalance = balance;
             balance += (deposit + withdrawal);
+            this.FutureBalance = balance;
             deposit = 0;
             withdrawal = 0;
             

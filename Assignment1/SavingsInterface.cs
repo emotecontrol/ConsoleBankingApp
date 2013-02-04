@@ -40,8 +40,8 @@ namespace Assignment1
             testcustomer = newCustomer();
             List<SavingsAccount> oldlist = new List<SavingsAccount>();
             oldlist.Add(testcustomer);
-            Console.WriteLine(testcustomer.LastName);
-            Console.WriteLine(testcustomer.FirstName);
+            //Console.WriteLine(testcustomer.LastName);
+            //Console.WriteLine(testcustomer.FirstName);
             
             //Console.WriteLine("The address is {0} {1} {2}", testcustomer.StreetNumber, ti.ToTitleCase(testcustomer.StreetName), ti.ToTitleCase(testcustomer.StreetType));
             SaveAndLoad save = new SaveAndLoad("save.txt");
@@ -50,7 +50,7 @@ namespace Assignment1
             newlist = save.Load();
             SavingsAccount newguy = new SavingsAccount();
             newguy = newlist[0];
-            Console.WriteLine(newguy.StreetName);
+            Console.WriteLine(newguy.Interest);
             
             Console.ReadKey();
         }
@@ -69,7 +69,7 @@ namespace Assignment1
                 {
                     firstName = Console.ReadLine();
                     newCust.FirstName = firstName.Trim();
-                    Console.WriteLine("\nYou entered {0}.  Is this correct? Y/N", newCust.FirstName);
+                    Console.Write("You entered {0}.  Is this correct? Y/N\n", newCust.FirstName);
                     first = confirm();
                 }
                 finally
@@ -91,7 +91,7 @@ namespace Assignment1
                 {
                     lastName = Console.ReadLine();
                     newCust.LastName = lastName.Trim();
-                    Console.WriteLine("\nYou entered {0}.  Is this correct? Y/N", newCust.LastName);
+                    Console.Write("You entered {0}.  Is this correct? Y/N\n", newCust.LastName);
                     last = confirm();
                 }
                 finally
@@ -181,7 +181,7 @@ namespace Assignment1
                             newCust.StreetNumber = splitAddress[0];
                             newCust.StreetName = splitAddress[1];
                             StreetAddressConverter convert = new StreetAddressConverter();
-                            Console.WriteLine(convert.convertToAbbr("Street"));
+                            
                             string convertme = splitAddress[2];
                             string streetAbbr = convert.convertToAbbr(convertme);
                             newCust.StreetType = streetAbbr;
@@ -200,17 +200,17 @@ namespace Assignment1
                     }
                     else if (newCust.Rroute == null) // there is no rr
                     {
-                        Console.WriteLine("\nYou entered {0} {1} {2}.  Is this correct? Y/N", newCust.StreetNumber, ti.ToTitleCase(newCust.StreetName), ti.ToTitleCase(newCust.StreetType));
+                        Console.Write("\nYou entered {0} {1} {2}.  Is this correct? Y/N\n", newCust.StreetNumber, ti.ToTitleCase(newCust.StreetName), ti.ToTitleCase(newCust.StreetType));
                         strAddress = confirm();
                     }
                     else if (newCust.StreetName == null) // there is no street address
                     {
-                        Console.WriteLine("\nYou entered {0} {1}.  Is this correct? Y/N", ti.ToTitleCase(newCust.Rroute), ti.ToTitleCase(newCust.RrStation));
+                        Console.Write("\nYou entered {0} {1}.  Is this correct? Y/N\n", ti.ToTitleCase(newCust.Rroute), ti.ToTitleCase(newCust.RrStation));
                         strAddress = confirm();
                     }
                     else // there is both a street address and a rr
                     {
-                        Console.WriteLine("\nYou entered {0} {1} {2} {3} {4}.  Is this correct? Y/N", newCust.StreetNumber, ti.ToTitleCase(newCust.StreetName), ti.ToTitleCase(newCust.StreetType), ti.ToTitleCase(newCust.Rroute), ti.ToTitleCase(newCust.RrStation));
+                        Console.Write("\nYou entered {0} {1} {2} {3} {4}.  Is this correct? Y/N\n", newCust.StreetNumber, ti.ToTitleCase(newCust.StreetName), ti.ToTitleCase(newCust.StreetType), ti.ToTitleCase(newCust.Rroute), ti.ToTitleCase(newCust.RrStation));
                         strAddress = confirm();
                         
                     }
@@ -218,9 +218,45 @@ namespace Assignment1
                 }
             }
 
+            string interestInput = null;
+            double setInterest;
+            bool isInterest = false;
+            while (isInterest == false)
+            { 
+                Console.WriteLine("Please enter the interest on this customer's account.");
+                try
+                {
+                    interestInput = Console.ReadLine();
+                }
+                finally
+                {
+                    double.TryParse(interestInput, out setInterest);
+                    setInterest = setInterest / 100;
+                    newCust.Interest = setInterest;
+                }
+                Console.Write("You entered {0:P}, is that correct? Y/N\n", setInterest);
+                isInterest = confirm();
+
+            }
 
             return newCust;
         }
+
+        static void displayMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("**********************************************");
+            Console.WriteLine("*       Welcome to George Brown Banking      *");
+            Console.WriteLine("*       Branch Manager: Robert DeCaire       *");
+            Console.WriteLine("**********************************************");
+            Console.WriteLine("*           Please Choose An Option          *");
+            Console.WriteLine("**********************************************");
+            Console.WriteLine("* (C)reate a customer * (M)odify a customer  *");
+            Console.WriteLine("* (R)emove a customer * (L)ist customers     *");
+            Console.WriteLine("* (D)eposit funds     * (W)ithdraw funds     *");
+            Console.WriteLine("**********************************************");
+        }
+
         public static string[] parseAddress(string address) // address is an address of the type "36 Blueberry Lane"
         {
             string[] addressArray = new string[3];

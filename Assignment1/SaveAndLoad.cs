@@ -35,14 +35,13 @@ namespace Assignment1
                 AddText(fs, output);
             }
         }
-
+        
         public List<SavingsAccount> Load()
         {
             string openAccountListJson = null;
             List<SavingsAccount> newlist;
             using (FileStream fs = File.Open(filename, FileMode.Open))
-            {
-                
+            {                
                 byte[] b = new byte[1024]; // make a byte array
                 UTF8Encoding temp = new UTF8Encoding(true); // make a UTF8 Encoding object
                 while (fs.Read(b, 0, b.Length) > 0) // while the buffer created by the FileStream is bigger than 0
@@ -60,6 +59,5 @@ namespace Assignment1
             byte[] info = new UTF8Encoding(true).GetBytes(value);
             fs.Write(info, 0, info.Length);
         }
-
     }
 }
