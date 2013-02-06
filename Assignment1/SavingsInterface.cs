@@ -9,11 +9,29 @@ namespace Assignment1
 {
     class SavingsInterface
     {
+        
+        
+        
         static List<SavingsAccount> customerList = new List<SavingsAccount>();
         static TextInfo ti = new CultureInfo("en-CA", false).TextInfo;
-        
+        StringComparer ordICCmp = StringComparer.OrdinalIgnoreCase;
+
         static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
+                
+
+            
+
+            
+
+            //var fonts = ConsoleHelper.ConsoleFonts;
+            //for (int f = 0; f < fonts.Length; f++)
+            //    Console.WriteLine("{0}: X={1}, Y={2}",
+            //       fonts[f].Index, fonts[f].SizeX, fonts[f].SizeY);
+            //ConsoleHelper.SetConsoleFont(13);
+              
+            
             // this is just some tests for the address converter.  It'll get removed eventually.
             //StreetAddressConverter lookup = new StreetAddressConverter();
             //string alley = lookup.convertToAbbr("alley");
@@ -36,29 +54,31 @@ namespace Assignment1
             //Console.WriteLine(test[1]);
             //Console.WriteLine(test[2]);
             
-            SavingsAccount testcustomer = new SavingsAccount();
-            testcustomer = newCustomer();
-            List<SavingsAccount> oldlist = new List<SavingsAccount>();
-            oldlist.Add(testcustomer);
-            //Console.WriteLine(testcustomer.LastName);
-            //Console.WriteLine(testcustomer.FirstName);
+            //SavingsAccount testcustomer = new SavingsAccount();
+            //testcustomer = newCustomer();
+            //List<SavingsAccount> oldlist = new List<SavingsAccount>();
+            //oldlist.Add(testcustomer);
+            ////Console.WriteLine(testcustomer.LastName);
+            ////Console.WriteLine(testcustomer.FirstName);
             
-            //Console.WriteLine("The address is {0} {1} {2}", testcustomer.StreetNumber, ti.ToTitleCase(testcustomer.StreetName), ti.ToTitleCase(testcustomer.StreetType));
-            SaveAndLoad save = new SaveAndLoad("save.txt");
-            save.Save(oldlist);
-            List<SavingsAccount> newlist = new List<SavingsAccount>();
-            newlist = save.Load();
-            SavingsAccount newguy = new SavingsAccount();
-            newguy = newlist[0];
-            Console.WriteLine(newguy.Interest);
+            ////Console.WriteLine("The address is {0} {1} {2}", testcustomer.StreetNumber, ti.ToTitleCase(testcustomer.StreetName), ti.ToTitleCase(testcustomer.StreetType));
+            //SaveAndLoad save = new SaveAndLoad("save.txt");
+            //save.Save(oldlist);
+            //List<SavingsAccount> newlist = new List<SavingsAccount>();
+            //newlist = save.Load();
+            //SavingsAccount newguy = new SavingsAccount();
+            //newguy = newlist[0];
+            //Console.WriteLine(newguy.Interest);
             
-            Console.ReadKey();
+            //Console.ReadKey();
+            
+            displayMenu();
         }
 
         static SavingsAccount newCustomer()
         {
             SavingsAccount newCust = new SavingsAccount(); 
-            Console.WriteLine("Welcome to Customer Creation.  To create a new customer entry, please follow the instructions.");
+            Console.WriteLine("Welcome to Customer Creation.\nTo create a new customer entry, please follow the instructions.\n");
             
             bool first = false;
             string firstName = null;
@@ -107,9 +127,9 @@ namespace Assignment1
             bool strAddress = false;
             bool successInput = false;
 
-            string streetNumber = null;
-            string streetName = null;
-            string streetType = null;
+            //string streetNumber = null;
+            //string streetName = null;
+            //string streetType = null;
             string addressInput=null;
             string[] splitAddress = new string[3];
             string[] splitRR = new string[2];
@@ -238,23 +258,191 @@ namespace Assignment1
                 isInterest = confirm();
 
             }
+            
 
+            string sinInput = null;
+            bool isSIN = false;
+            bool unique = true;
+            
+            int socialInsurance;
+            while (isSIN == false || unique == false)
+            {
+                unique = true;
+                Console.Write("Please enter the customer's social insurance number.  E.g. 123456789: ");
+                sinInput = Console.ReadLine();
+                if (sinInput.Length != 9)
+                {
+                    Console.WriteLine("\nThat is not a valid SIN.  Please try again.");
+                }
+                else
+                {
+
+                    int.TryParse(sinInput, out socialInsurance);
+
+                    if (customerList.Count > 0)
+                    {
+
+                        foreach (SavingsAccount cust in customerList)
+                        {
+                            if (cust.SIN == socialInsurance)
+                            {
+                                Console.WriteLine("That SIN is already assigned to another customer.  Please try again");
+                                unique = false;
+                                break;
+                            }
+                            
+                                
+                            
+                        }
+                        
+                    }
+                    else if (customerList.Count == 0)
+                    {
+                        unique = true;
+                    }
+                    
+
+                    if (unique)
+                    {
+                        newCust.SIN = socialInsurance;
+                        isSIN = true;
+                    }
+                }
+
+            }
+            Console.Write("Customer created successfully.  Press any key to return to the menu...");
+            Console.ReadKey();
             return newCust;
         }
 
+
+
         static void displayMenu()
         {
-            Console.Clear();
-            Console.WriteLine("**********************************************");
-            Console.WriteLine("*       Welcome to George Brown Banking      *");
-            Console.WriteLine("*       Branch Manager: Robert DeCaire       *");
-            Console.WriteLine("**********************************************");
-            Console.WriteLine("*           Please Choose An Option          *");
-            Console.WriteLine("**********************************************");
-            Console.WriteLine("* (C)reate a customer * (M)odify a customer  *");
-            Console.WriteLine("* (R)emove a customer * (L)ist customers     *");
-            Console.WriteLine("* (D)eposit funds     * (W)ithdraw funds     *");
-            Console.WriteLine("**********************************************");
+            bool leaveMenu = false;
+            while (!leaveMenu)
+            {
+            
+                Console.Clear();
+                Console.WriteLine("**********************************************");
+                Console.WriteLine("*       Welcome to George Brown Banking      *");
+                Console.WriteLine("*       Branch Manager: Robert DeCaire       *");
+                Console.WriteLine("**********************************************");
+                Console.WriteLine("*           Please Choose An Option          *");
+                Console.WriteLine("**********************************************");
+                Console.WriteLine("* (C)reate a customer * (M)odify a customer  *");
+                Console.WriteLine("* (R)emove a customer * (S)how customers     *");
+                Console.WriteLine("* (D)eposit funds     * (W)ithdraw funds     *");
+                Console.WriteLine("* (L)oad customers    * Save and (Q)uit      *");    
+                Console.WriteLine("**********************************************");
+                string choice = getMenuChoice();
+                switch (choice)
+                {
+                    case "c":
+                        Console.Clear();
+                        customerList.Add(newCustomer());
+                        customerList.Sort(compareByLastName);
+                        break;
+                    case "m":
+                        Console.Clear();
+                    //    modifyCustomer();
+                        
+                        break;
+                    case "r":
+                        Console.Clear();
+                    //    removeCustomer();
+                        
+                        break;
+                    case "s":
+                        Console.Clear();
+                        showCustomers();
+                        
+                        break;
+                    case "d":
+                        Console.Clear();
+                    //    depositFunds();
+                        break;
+                    case "w":
+                        Console.Clear();
+                    //    withdrawFunds();
+                        break;
+                    case "l":
+                        Console.Clear();
+                        loadCustomers();
+                        customerList.Sort(compareByLastName);
+                        break;
+                    case "q":
+                        Console.Clear();
+                        bool quit = saveAndQuit();
+                        if (quit)
+                        {
+                            leaveMenu = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }        
+        }
+
+        private static int compareByLastName(SavingsAccount name1, SavingsAccount name2) // adapted from the msdn page on List<T>.Sort
+        {
+            string x = name1.LastName;
+            string y = name2.LastName;
+            if (x == null)
+            {
+                if (y == null)
+                {
+                    // If x is null and y is null, they're 
+                    // equal.  
+                    return 0;
+                }
+                else
+                {
+                    // If x is null and y is not null, y 
+                    // is greater.  
+                    return -1;
+                }
+            }
+            else
+            {
+                // If x is not null... 
+                // 
+                if (y == null)
+                // ...and y is null, x is greater.
+                {
+                    return 1;
+                }
+                else
+                {
+                    return x.CompareTo(y);
+                }
+            }
+        }
+
+        public static string getMenuChoice()
+        {
+            ConsoleKeyInfo keyChoice;
+            string strChoice = null;
+            try
+            {
+               keyChoice = Console.ReadKey(true);
+               strChoice = keyChoice.Key.ToString();
+            }
+            catch
+            {
+            }
+            
+           
+            if (strChoice != null)
+            {
+                strChoice = strChoice.ToLower();
+            }
+            else
+            {
+                strChoice = "0";
+            }
+            return strChoice;
         }
 
         public static string[] parseAddress(string address) // address is an address of the type "36 Blueberry Lane"
@@ -299,6 +487,90 @@ namespace Assignment1
             }
             return addressArray;
             
+        }
+
+        static void showCustomers()
+        {
+            if (customerList.Count > 0)
+            {
+                Console.WriteLine("************************************************************************");
+                Console.WriteLine("*                         Customer Information                         *");
+                Console.WriteLine("************************************************************************");
+                Console.WriteLine("* {0,-10} * {1,-10} * {2,-20} * {3, -8} * {4, -5} *", "Last Name", "First Name", "Address", "Balance", "Interest");
+                Console.WriteLine("************************************************************************");
+
+
+                foreach (SavingsAccount cust in customerList)
+                {
+
+                    Console.WriteLine("* {0,-10} * {1,-10} * {2,-20} * {3, -8} * {4, -8:p} *", cust.LastName, cust.FirstName, cust.FullAddress, cust.Balance, cust.Interest);
+                    Console.WriteLine("************************************************************************");
+                }
+            }
+            else
+            {
+                Console.WriteLine("There are no customers in the system.\nPlease create a customer or load saved customers.\n");
+            }
+            Console.WriteLine("Press any key to return to the menu...");
+            Console.ReadKey();
+        }
+
+        static void loadCustomers()
+        {
+            
+            Console.WriteLine("Are you sure you want to load a saved customer list? This will delete the current list. Y/N");
+            bool loadOrNot = confirm();
+            if (loadOrNot)
+            {
+                Console.WriteLine("Loading...\n");
+                try
+                {
+                    SaveAndLoad load = new SaveAndLoad("customer_list.sav");
+                    customerList = load.Load();
+                    Console.WriteLine("Load successful!\n");
+                    
+                }
+                catch
+                {
+                    Console.WriteLine("Something went wrong.  Please try again.");
+                }
+            }
+            Console.WriteLine("Press any key to return to the menu...");
+            Console.ReadKey();
+            
+        }
+
+        static bool saveAndQuit()
+        {
+            Console.WriteLine("Are you sure you want to save your customer list? Y/N");
+            bool saveOrNot = confirm();
+            if (saveOrNot)
+            {
+                Console.WriteLine("Saving...\n");
+                try
+                {
+                    SaveAndLoad save = new SaveAndLoad("customer_list.sav");
+                    save.Save(customerList);
+                    Console.WriteLine("Save successful!\n");
+                }
+                catch
+                {
+                    Console.WriteLine("Something went wrong.  Please try again.");
+                    Console.WriteLine("Press any key to return to the menu...");
+                    Console.ReadKey();
+                    return false;
+                }
+            }
+            Console.WriteLine("Are you sure you want to quit? Y/N");
+            bool quitOrNot = confirm();
+            if (quitOrNot)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         static bool confirm()

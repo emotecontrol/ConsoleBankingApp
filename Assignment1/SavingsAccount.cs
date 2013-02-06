@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 namespace Assignment1
 {
@@ -140,7 +141,15 @@ namespace Assignment1
             }
         }
 
-        
+        public string FullAddress
+        {
+            get
+            {
+                TextInfo ti = new CultureInfo("en-CA", false).TextInfo;
+                return streetNumber + " " + ti.ToTitleCase(streetName) + " " + ti.ToTitleCase(streetType);
+            }
+        }
+
         public double FutureBalance
         {
             get
