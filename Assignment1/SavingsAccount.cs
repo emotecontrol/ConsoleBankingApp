@@ -139,6 +139,10 @@ namespace Assignment1
             {
                 return balance;
             }
+            set
+            {
+                balance = value;
+            }
         }
 
         public string FullAddress

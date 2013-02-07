@@ -367,7 +367,9 @@ namespace Assignment1
                         break;
                     case "w":
                         Console.Clear();
-                    //    withdrawFunds();
+                        withdrawFunds();
+                        Console.WriteLine("Press any key to return to the menu...");
+                        Console.ReadKey();
                         break;
                     case "l":
                         Console.Clear();
@@ -510,7 +512,8 @@ namespace Assignment1
                     int custIndex = inputIndex();
                     if (custIndex < 1 || custIndex > customerList.Count)
                     {
-                        Console.WriteLine("That is not a valid customer.  Please try again.");
+                        Console.Clear();
+                        Console.WriteLine("That is not a valid customer.  Please try again.\n");
                     }
                     else
                     {
@@ -546,7 +549,78 @@ namespace Assignment1
                                 }
                             }
                         }
+                        quitNow = true;                        
+                    }
+                }
+            }
+        }
 
+        static void withdrawFunds()
+        {
+            if (customerList.Count == 0)
+            {
+                Console.WriteLine("There are no customers in the system.\nPlease create a customer or load saved customers.\n");
+            }
+            else
+            {
+                SavingsAccount currentCust = new SavingsAccount();
+                bool quitNow = false;
+                while (!quitNow)
+                {
+
+                    showCustomers();
+                    Console.WriteLine("Please choose the account from which you would like to make a withdrawal.");
+                    int custIndex = inputIndex();
+                    if (custIndex < 1 || custIndex > customerList.Count)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("That is not a valid customer.  Please try again.\n");
+                    }
+                    else if (customerList[custIndex - 1].Balance == 0)
+                    {
+                        Console.WriteLine("There are no funds in that account to withdraw.");
+                        quitNow = true;
+                    }
+                    else
+                    {
+                        currentCust = customerList[custIndex - 1];
+                        Console.Clear();
+                        displayCustomer(currentCust);
+                        bool gotWithdrawal = false;
+                        double withdrawal;
+                        while (!gotWithdrawal)
+                        {
+                            Console.WriteLine("How much would you like to withdraw?");
+                            string withdrawalInput = Console.ReadLine();
+                            gotWithdrawal = double.TryParse(withdrawalInput, out withdrawal);
+                            if (!gotWithdrawal)
+                            {
+                                Console.WriteLine("That is not a valid value.  Please try again.");
+                            }
+                            
+                            else
+                            {
+                                Console.WriteLine("You entered {0:c}.  Is this correct? Y/N", withdrawal);
+                                bool withdrawalCorrect = confirm();
+                                if (!withdrawalCorrect)
+                                {
+                                    gotWithdrawal = false;
+                                }
+                                else if (withdrawal > currentCust.Balance)
+                                {
+                                    Console.WriteLine("The withdrawal amount is greater than the account balance.  Please try again.");
+                                    gotWithdrawal = false;
+                                }
+                                else
+                                {
+                                    currentCust.makeWithdrawal(withdrawal);
+                                    currentCust.updateBalance();
+                                    Console.WriteLine("Withdrawal made successfully.");
+                                    Console.WriteLine("The current balance in this account is {0:C}.", currentCust.Balance);
+                                    Console.WriteLine("The balance in 1 year, compounded monthly at {0:p} will be {1:C}", currentCust.Interest, currentCust.FutureBalance);
+                                }
+                            }
+                        }
                         quitNow = true;
                     }
                 }
@@ -556,14 +630,14 @@ namespace Assignment1
         static void displayCustomer(SavingsAccount cust)
         {
             Console.WriteLine("*****************************************************************");
-            Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -20} *", "Last Name", "First Name", "SIN", "Address");
-            Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -20} *", "", "", "", "");
-            Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -20} *", cust.LastName, cust.FirstName, cust.SIN, cust.FullAddress);
+            Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -23} *", "Last Name", "First Name", "SIN", "Address");
+            Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -23} *", "", "", "", "");
+            Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -23} *", cust.LastName, cust.FirstName, cust.SIN, cust.FullAddress);
             Console.WriteLine("*****************************************************************");
             
-            Console.WriteLine("* {0, -15} * {1, -17} * {2,-21}*", "Balance", "Interest", "1 Year Balance");
-            Console.WriteLine("* {0, -15} * {1, -17} * {2, 21}*", "", "", "");
-            Console.WriteLine("* {0, -15} * {1, -17:p2} * {2,-21}*", cust.Balance, cust.Interest, cust.FutureBalance);
+            Console.WriteLine("* {0, -15} * {1, -17} * {2,-24}*", "Balance", "Interest", "1 Year Balance");
+            Console.WriteLine("* {0, -15} * {1, -17} * {2, 24}*", "", "", "");
+            Console.WriteLine("* {0, -15:c} * {1, -17:p2} * {2,-24:c}*", cust.Balance, cust.Interest, cust.FutureBalance);
             Console.WriteLine("*****************************************************************");
         }
 
@@ -607,7 +681,7 @@ namespace Assignment1
                     Console.WriteLine("* {0, -2} * {1,-10} * {2,-10} * {3,-20} * {4, -7:c} * {5, -8:p} *", index, cust.LastName, cust.FirstName, cust.FullAddress, cust.Balance, cust.Interest);
                     Console.WriteLine("****************************************************************************");
                 }
-                // need to add: way to look at a particular customer in more detail, view SIN, future balance, etc.
+                // need to add: a way to call displayCustomer();
             }
             else
             {
