@@ -356,11 +356,14 @@ namespace Assignment1
                     case "s":
                         Console.Clear();
                         showCustomers();
-                        
+                        Console.WriteLine("Press any key to return to the menu...");
+                        Console.ReadKey();
                         break;
                     case "d":
                         Console.Clear();
-                    //    depositFunds();
+                        depositFunds();
+                        Console.WriteLine("Press any key to return to the menu...");
+                        Console.ReadKey();
                         break;
                     case "w":
                         Console.Clear();
@@ -489,30 +492,128 @@ namespace Assignment1
             
         }
 
+        static void depositFunds()
+        {
+            if (customerList.Count == 0)
+            {
+                Console.WriteLine("There are no customers in the system.\nPlease create a customer or load saved customers.\n");
+            }
+            else
+            {
+                SavingsAccount currentCust = new SavingsAccount();
+                bool quitNow = false;
+                while (!quitNow)
+                {
+
+                    showCustomers();
+                    Console.WriteLine("Please choose the account to which you would like to make a deposit.");
+                    int custIndex = inputIndex();
+                    if (custIndex < 1 || custIndex > customerList.Count)
+                    {
+                        Console.WriteLine("That is not a valid customer.  Please try again.");
+                    }
+                    else
+                    {
+                        currentCust = customerList[custIndex - 1];
+                        Console.Clear();
+                        displayCustomer(currentCust);
+                        bool gotDeposit = false;
+                        double deposit;
+                        while (!gotDeposit)
+                        {
+                            Console.WriteLine("How much would you like to deposit?");
+                            string depositInput = Console.ReadLine();
+                            gotDeposit = double.TryParse(depositInput, out deposit);
+                            if (!gotDeposit)
+                            {
+                                Console.WriteLine("That is not a valid value.  Please try again.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("You entered {0:c}.  Is this correct? Y/N", deposit);
+                                bool depositCorrect = confirm();
+                                if (!depositCorrect)
+                                {
+                                    gotDeposit = false;
+                                }
+                                else
+                                {
+                                    currentCust.makeDeposit(deposit);
+                                    currentCust.updateBalance();
+                                    Console.WriteLine("Deposit made successfully.");
+                                    Console.WriteLine("The current balance in this account is {0:C}.", currentCust.Balance);
+                                    Console.WriteLine("The balance in 1 year, compounded monthly at {0:p} will be {1:C}", currentCust.Interest, currentCust.FutureBalance);
+                                }
+                            }
+                        }
+
+                        quitNow = true;
+                    }
+                }
+            }
+        }
+
+        static void displayCustomer(SavingsAccount cust)
+        {
+            Console.WriteLine("*****************************************************************");
+            Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -20} *", "Last Name", "First Name", "SIN", "Address");
+            Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -20} *", "", "", "", "");
+            Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -20} *", cust.LastName, cust.FirstName, cust.SIN, cust.FullAddress);
+            Console.WriteLine("*****************************************************************");
+            
+            Console.WriteLine("* {0, -15} * {1, -17} * {2,-21}*", "Balance", "Interest", "1 Year Balance");
+            Console.WriteLine("* {0, -15} * {1, -17} * {2, 21}*", "", "", "");
+            Console.WriteLine("* {0, -15} * {1, -17:p2} * {2,-21}*", cust.Balance, cust.Interest, cust.FutureBalance);
+            Console.WriteLine("*****************************************************************");
+        }
+
+
+        static int inputIndex()
+        {
+            ConsoleKeyInfo keyChoice;
+            int accountChoice = 0;
+            try
+            {
+                keyChoice = Console.ReadKey(true);
+                if (char.IsDigit(keyChoice.KeyChar))
+                {
+                    int answer = Convert.ToInt32(keyChoice.KeyChar);
+                    accountChoice = answer - 48; //-48 because 0 is represented in unicode by 48 and 1 by 49 etc etc
+                }
+            }
+            catch
+            {
+            }
+               
+            
+            return accountChoice;
+        
+        }
+
         static void showCustomers()
         {
             if (customerList.Count > 0)
             {
-                Console.WriteLine("************************************************************************");
-                Console.WriteLine("*                         Customer Information                         *");
-                Console.WriteLine("************************************************************************");
-                Console.WriteLine("* {0,-10} * {1,-10} * {2,-20} * {3, -8} * {4, -5} *", "Last Name", "First Name", "Address", "Balance", "Interest");
-                Console.WriteLine("************************************************************************");
+                Console.WriteLine("****************************************************************************");
+                Console.WriteLine("*                           Customer Information                           *");
+                Console.WriteLine("****************************************************************************");
+                Console.WriteLine("* {0,-2} * {1,-10} * {2,-10} * {3,-20} * {4, -7} * {5, -5} *", "#" , "Last Name", "First Name", "Address", "Balance", "Interest");
+                Console.WriteLine("****************************************************************************");
 
-
+                int index = 0;
                 foreach (SavingsAccount cust in customerList)
                 {
-
-                    Console.WriteLine("* {0,-10} * {1,-10} * {2,-20} * {3, -8} * {4, -8:p} *", cust.LastName, cust.FirstName, cust.FullAddress, cust.Balance, cust.Interest);
-                    Console.WriteLine("************************************************************************");
+                    index++;
+                    Console.WriteLine("* {0, -2} * {1,-10} * {2,-10} * {3,-20} * {4, -7:c} * {5, -8:p} *", index, cust.LastName, cust.FirstName, cust.FullAddress, cust.Balance, cust.Interest);
+                    Console.WriteLine("****************************************************************************");
                 }
+                // need to add: way to look at a particular customer in more detail, view SIN, future balance, etc.
             }
             else
             {
                 Console.WriteLine("There are no customers in the system.\nPlease create a customer or load saved customers.\n");
             }
-            Console.WriteLine("Press any key to return to the menu...");
-            Console.ReadKey();
+            
         }
 
         static void loadCustomers()
@@ -532,7 +633,7 @@ namespace Assignment1
                 }
                 catch
                 {
-                    Console.WriteLine("Something went wrong.  Please try again.");
+                    Console.WriteLine("There does not seem to be a valid saved customer list.");
                 }
             }
             Console.WriteLine("Press any key to return to the menu...");
