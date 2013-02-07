@@ -14,64 +14,11 @@ namespace Assignment1
         
         static List<SavingsAccount> customerList = new List<SavingsAccount>();
         static TextInfo ti = new CultureInfo("en-CA", false).TextInfo;
-        StringComparer ordICCmp = StringComparer.OrdinalIgnoreCase;
+        
 
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-                
-
-            
-
-            
-
-            //var fonts = ConsoleHelper.ConsoleFonts;
-            //for (int f = 0; f < fonts.Length; f++)
-            //    Console.WriteLine("{0}: X={1}, Y={2}",
-            //       fonts[f].Index, fonts[f].SizeX, fonts[f].SizeY);
-            //ConsoleHelper.SetConsoleFont(13);
-              
-            
-            // this is just some tests for the address converter.  It'll get removed eventually.
-            //StreetAddressConverter lookup = new StreetAddressConverter();
-            //string alley = lookup.convertToAbbr("alley");
-            //Console.WriteLine(alley);
-            
-            //string ct = lookup.convertToAddress("ct");
-            //Console.WriteLine(ct);
-
-            //string crossing = "crossing";
-            //Console.WriteLine(lookup.convertToAddress("Boulevard"));
-            //Console.WriteLine(lookup.convertToAbbr("Boulevard"));
-            //Console.WriteLine(lookup.convertToAddress("notinthelist"));
-            //Console.WriteLine(lookup.convertToAbbr("northis"));
-            //Console.WriteLine(lookup.convertToAbbr("av"));
-            //Console.WriteLine(lookup.convertToAddress("pl"));
-            //string[] test = new string[3];
-            //string teststring = "32 Blue Water Drive";
-            //test = parseAddress(teststring);
-            //Console.WriteLine(test[0]);
-            //Console.WriteLine(test[1]);
-            //Console.WriteLine(test[2]);
-            
-            //SavingsAccount testcustomer = new SavingsAccount();
-            //testcustomer = newCustomer();
-            //List<SavingsAccount> oldlist = new List<SavingsAccount>();
-            //oldlist.Add(testcustomer);
-            ////Console.WriteLine(testcustomer.LastName);
-            ////Console.WriteLine(testcustomer.FirstName);
-            
-            ////Console.WriteLine("The address is {0} {1} {2}", testcustomer.StreetNumber, ti.ToTitleCase(testcustomer.StreetName), ti.ToTitleCase(testcustomer.StreetType));
-            //SaveAndLoad save = new SaveAndLoad("save.txt");
-            //save.Save(oldlist);
-            //List<SavingsAccount> newlist = new List<SavingsAccount>();
-            //newlist = save.Load();
-            //SavingsAccount newguy = new SavingsAccount();
-            //newguy = newlist[0];
-            //Console.WriteLine(newguy.Interest);
-            
-            //Console.ReadKey();
-            
             displayMenu();
         }
 
@@ -126,10 +73,7 @@ namespace Assignment1
             }
             bool strAddress = false;
             bool successInput = false;
-
-            //string streetNumber = null;
-            //string streetName = null;
-            //string streetType = null;
+           
             string addressInput=null;
             string[] splitAddress = new string[3];
             string[] splitRR = new string[2];
@@ -198,8 +142,7 @@ namespace Assignment1
                         {
                             newCust.StreetNumber = splitAddress[0];
                             newCust.StreetName = splitAddress[1];
-                            newCust.StreetNumber = splitAddress[0];
-                            newCust.StreetName = splitAddress[1];
+                            
                             StreetAddressConverter convert = new StreetAddressConverter();
                             
                             string convertme = splitAddress[2];
@@ -315,7 +258,24 @@ namespace Assignment1
             return newCust;
         }
 
+        static void removeCustomer()
+        {
+            int custNumber = 0;
 
+            showCustomers(true);
+            Console.WriteLine("\nPlease choose a customer to delete.");
+            Console.WriteLine("Warning!  This cannot be undone!");
+            Console.WriteLine("Hit 'return' to exit.");
+            bool gotNumber = int.TryParse(Console.ReadLine(), out custNumber);
+            if (gotNumber && custNumber > 0 && custNumber <= customerList.Count)
+            {
+                Console.WriteLine("Would you really like to delete {0} {1}? Y/N", ti.ToTitleCase(customerList[custNumber - 1].FirstName), ti.ToTitleCase(customerList[custNumber - 1].LastName));
+                if (confirm())
+                {
+                    customerList.Remove(customerList[custNumber - 1]);
+                }
+            }
+        }
 
         static void displayMenu()
         {
@@ -350,14 +310,13 @@ namespace Assignment1
                         break;
                     case "r":
                         Console.Clear();
-                    //    removeCustomer();
+                        removeCustomer();
                         
                         break;
                     case "s":
                         Console.Clear();
-                        showCustomers();
-                        Console.WriteLine("Press any key to return to the menu...");
-                        Console.ReadKey();
+                        showCustomers(false);
+                        
                         break;
                     case "d":
                         Console.Clear();
@@ -478,6 +437,7 @@ namespace Assignment1
             return addressArray;
             
         }
+
         public static string[] parseRR(string address) // address is an address of the type "RR 5 Station Main"
         {
             string[] addressArray = new string[2];
@@ -507,7 +467,7 @@ namespace Assignment1
                 while (!quitNow)
                 {
 
-                    showCustomers();
+                    showCustomers(true);
                     Console.WriteLine("Please choose the account to which you would like to make a deposit.");
                     int custIndex = inputIndex();
                     if (custIndex < 1 || custIndex > customerList.Count)
@@ -567,8 +527,8 @@ namespace Assignment1
                 bool quitNow = false;
                 while (!quitNow)
                 {
-
-                    showCustomers();
+                    
+                    showCustomers(true);
                     Console.WriteLine("Please choose the account from which you would like to make a withdrawal.");
                     int custIndex = inputIndex();
                     if (custIndex < 1 || custIndex > customerList.Count)
@@ -642,7 +602,7 @@ namespace Assignment1
         }
 
 
-        static int inputIndex()
+        static int inputIndex() // some of this code was found at http://stackoverflow.com/questions/648555/is-there-a-good-way-to-use-console-readkey-for-choosing-between-values-without-d
         {
             ConsoleKeyInfo keyChoice;
             int accountChoice = 0;
@@ -658,13 +618,10 @@ namespace Assignment1
             catch
             {
             }
-               
-            
             return accountChoice;
-        
         }
 
-        static void showCustomers()
+        static void showCustomers(bool justDisplay)
         {
             if (customerList.Count > 0)
             {
@@ -674,6 +631,7 @@ namespace Assignment1
                 Console.WriteLine("* {0,-2} * {1,-10} * {2,-10} * {3,-20} * {4, -7} * {5, -5} *", "#" , "Last Name", "First Name", "Address", "Balance", "Interest");
                 Console.WriteLine("****************************************************************************");
 
+                int custNumber = 0;
                 int index = 0;
                 foreach (SavingsAccount cust in customerList)
                 {
@@ -681,11 +639,25 @@ namespace Assignment1
                     Console.WriteLine("* {0, -2} * {1,-10} * {2,-10} * {3,-20} * {4, -7:c} * {5, -8:p} *", index, cust.LastName, cust.FirstName, cust.FullAddress, cust.Balance, cust.Interest);
                     Console.WriteLine("****************************************************************************");
                 }
-                // need to add: a way to call displayCustomer();
+                if (!justDisplay)
+                {
+                    Console.WriteLine("\nTo view more details of a customer, enter that customer's number.");
+                    Console.WriteLine("Otherwise hit 'Return' to return to the menu.");
+                    bool gotNumber = int.TryParse(Console.ReadLine(), out custNumber);
+                    if (gotNumber && custNumber > 0 && custNumber <= customerList.Count)
+                    {
+                        Console.Clear();
+                        displayCustomer(customerList[custNumber - 1]);
+                        Console.WriteLine("Press any key to return to the menu...");
+                        Console.ReadKey();
+                    }
+                }
             }
             else
             {
                 Console.WriteLine("There are no customers in the system.\nPlease create a customer or load saved customers.\n");
+                Console.WriteLine("Press any key to return to the menu...");
+                Console.ReadKey();
             }
             
         }
@@ -694,8 +666,7 @@ namespace Assignment1
         {
             
             Console.WriteLine("Are you sure you want to load a saved customer list? This will delete the current list. Y/N");
-            bool loadOrNot = confirm();
-            if (loadOrNot)
+            if (confirm())
             {
                 Console.WriteLine("Loading...\n");
                 try
@@ -718,8 +689,7 @@ namespace Assignment1
         static bool saveAndQuit()
         {
             Console.WriteLine("Are you sure you want to save your customer list? Y/N");
-            bool saveOrNot = confirm();
-            if (saveOrNot)
+            if (confirm())
             {
                 Console.WriteLine("Saving...\n");
                 try
@@ -737,15 +707,7 @@ namespace Assignment1
                 }
             }
             Console.WriteLine("Are you sure you want to quit? Y/N");
-            bool quitOrNot = confirm();
-            if (quitOrNot)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return confirm();
         }
 
         static bool confirm()
