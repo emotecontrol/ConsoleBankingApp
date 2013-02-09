@@ -62,10 +62,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SaveAndLoad.cs" />
-    <Compile Include="StreetAddressConverter.cs" />
-    <Compile Include="SavingsAccount.cs" />
-    <Compile Include="SavingsInterface.cs" />
+    <Compile Include="RobertDeCaire_SaveAndLoad.cs" />
+    <Compile Include="RobertDeCaire_StreetAddressConverter.cs" />
+    <Compile Include="RobertDeCaire_SavingsAccount.cs" />
+    <Compile Include="RobertDeCaire_SavingsInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

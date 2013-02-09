@@ -17,7 +17,7 @@ namespace Assignment1
             phone,
             streetNumber;
         int socialInsurance;
-        const double interest = 5.50;
+        const double interest = 0.055;
         double balance,
             deposit,
             oldBalance,
