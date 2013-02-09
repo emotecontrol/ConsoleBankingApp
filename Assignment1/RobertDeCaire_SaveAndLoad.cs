@@ -12,10 +12,10 @@ using System.IO;
 
 namespace Assignment1
 {
-    class SaveAndLoad
+    class RobertDeCaire_SaveAndLoad
     {
         string filename;
-        public SaveAndLoad(string file)
+        public RobertDeCaire_SaveAndLoad(string file)
         {
             filename = file;
         }
@@ -24,7 +24,7 @@ namespace Assignment1
         // data, particularly: http://msdn.microsoft.com/en-us/library/system.io.filestream.aspx
         
         
-        public void Save(List<SavingsAccount> listToSave){
+        public void Save(List<RobertDeCaire_SavingsAccount> listToSave){
             if (File.Exists(filename))
             {
                 File.Delete(filename);
@@ -36,10 +36,10 @@ namespace Assignment1
             }
         }
         
-        public List<SavingsAccount> Load()
+        public List<RobertDeCaire_SavingsAccount> Load()
         {
             string openAccountListJson = null;
-            List<SavingsAccount> newlist;
+            List<RobertDeCaire_SavingsAccount> newlist;
             using (FileStream fs = File.Open(filename, FileMode.Open))
             {                
                 byte[] b = new byte[1024]; // make a byte array to use as a buffer
@@ -50,7 +50,7 @@ namespace Assignment1
                     openAccountListJson += temp.GetString(b); // add the byte array to the Json string in UTF8 encoding
                 }
             }
-            newlist = JsonConvert.DeserializeObject<List<SavingsAccount>>(openAccountListJson); // Deserialize the Json string to a List<SavingsAccount> object
+            newlist = JsonConvert.DeserializeObject<List<RobertDeCaire_SavingsAccount>>(openAccountListJson); // Deserialize the Json string to a List<SavingsAccount> object
             return newlist;
         }
         

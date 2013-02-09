@@ -9,12 +9,12 @@ namespace Assignment1
 {
     // version 1.0 09/02/2013
 
-    class SavingsInterface
+    class RobertDeCaire_SavingsInterface
     {
         
         
         
-        static List<SavingsAccount> customerList = new List<SavingsAccount>();
+        static List<RobertDeCaire_SavingsAccount> customerList = new List<RobertDeCaire_SavingsAccount>();
         static TextInfo ti = new CultureInfo("en-CA", false).TextInfo;
         
 
@@ -24,7 +24,7 @@ namespace Assignment1
             displayMenu();
         }
 
-        static void setFirstName(SavingsAccount customer)
+        static void setFirstName(RobertDeCaire_SavingsAccount customer)
         {
             bool first = false;
             string firstName = null;
@@ -50,7 +50,7 @@ namespace Assignment1
             }
         }
 
-        static void setLastName(SavingsAccount customer)
+        static void setLastName(RobertDeCaire_SavingsAccount customer)
         {
 
             bool last = false;
@@ -77,7 +77,7 @@ namespace Assignment1
             }
         }
 
-        static void setAddress(SavingsAccount customer)
+        static void setAddress(RobertDeCaire_SavingsAccount customer)
         {
             bool strAddress = false;
             bool successInput = false;
@@ -109,7 +109,7 @@ namespace Assignment1
                                 // Assign address parts to the SavingsAccount object
                                 customer.StreetNumber = splitAddress[0];
                                 customer.StreetName = splitAddress[1];
-                                StreetAddressConverter convert = new StreetAddressConverter();
+                                RobertDeCaire_StreetAddressConverter convert = new RobertDeCaire_StreetAddressConverter();
 
                                 customer.StreetType = convert.convertToAbbr(splitAddress[2]);
                                 customer.Rroute = splitRR[0];
@@ -151,7 +151,7 @@ namespace Assignment1
                             customer.StreetNumber = splitAddress[0];
                             customer.StreetName = splitAddress[1];
 
-                            StreetAddressConverter convert = new StreetAddressConverter();
+                            RobertDeCaire_StreetAddressConverter convert = new RobertDeCaire_StreetAddressConverter();
 
                             string convertme = splitAddress[2];
                             string streetAbbr = convert.convertToAbbr(convertme);
@@ -190,7 +190,7 @@ namespace Assignment1
             }
         }
 
-        static void setPhone(SavingsAccount customer)
+        static void setPhone(RobertDeCaire_SavingsAccount customer)
         {
             string phoneInput = null;
             string[] phoneArray = new string[3];
@@ -247,7 +247,7 @@ namespace Assignment1
         //    }
         //}
 
-        static void setSIN(SavingsAccount customer)
+        static void setSIN(RobertDeCaire_SavingsAccount customer)
         {
             string sinInput = null;
             bool isSIN = false;
@@ -271,7 +271,7 @@ namespace Assignment1
                     if (customerList.Count > 0)
                     {
 
-                        foreach (SavingsAccount cust in customerList)
+                        foreach (RobertDeCaire_SavingsAccount cust in customerList)
                         {
                             if (cust.SIN == socialInsurance)
                             {
@@ -301,9 +301,9 @@ namespace Assignment1
             }
         }
 
-        static SavingsAccount newCustomer()
+        static RobertDeCaire_SavingsAccount newCustomer()
         {
-            SavingsAccount newCust = new SavingsAccount(); 
+            RobertDeCaire_SavingsAccount newCust = new RobertDeCaire_SavingsAccount(); 
             Console.WriteLine("Welcome to Customer Creation.\nTo create a new customer entry, please follow the instructions.\n");
             setFirstName(newCust);
             setLastName(newCust);
@@ -403,7 +403,7 @@ namespace Assignment1
             }        
         }
 
-        private static int compareByLastName(SavingsAccount name1, SavingsAccount name2) // adapted from the msdn page on List<T>.Sort
+        private static int compareByLastName(RobertDeCaire_SavingsAccount name1, RobertDeCaire_SavingsAccount name2) // adapted from the msdn page on List<T>.Sort
         {
             string x = name1.LastName;
             string y = name2.LastName;
@@ -509,7 +509,7 @@ namespace Assignment1
             }
             else
             {
-                SavingsAccount currentCust = new SavingsAccount();
+                RobertDeCaire_SavingsAccount currentCust = new RobertDeCaire_SavingsAccount();
                 bool quitNow = false;
                 while (!quitNow)
                 {
@@ -539,13 +539,13 @@ namespace Assignment1
             }
         }
 
-        static void setOpeningBalance(SavingsAccount customer)
+        static void setOpeningBalance(RobertDeCaire_SavingsAccount customer)
         {
             Console.WriteLine("Please enter the customer's opening balance.");
             addFunds(customer);
         }
 
-        static void addFunds(SavingsAccount currentCust)
+        static void addFunds(RobertDeCaire_SavingsAccount currentCust)
         {
             bool quitNow = false;
             while (!quitNow)
@@ -585,7 +585,7 @@ namespace Assignment1
             }
             else
             {
-                SavingsAccount currentCust = new SavingsAccount();
+                RobertDeCaire_SavingsAccount currentCust = new RobertDeCaire_SavingsAccount();
                 bool quitNow = false;
                 while (!quitNow)
                 {
@@ -649,7 +649,7 @@ namespace Assignment1
             }
         }
 
-        static void displayCustomer(SavingsAccount cust)
+        static void displayCustomer(RobertDeCaire_SavingsAccount cust)
         {
             Console.WriteLine("*****************************************************************");
             Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -23} *", "Last Name", "First Name", "SIN", "Address");
@@ -695,7 +695,7 @@ namespace Assignment1
 
                 int custNumber = 0;
                 int index = 0;
-                foreach (SavingsAccount cust in customerList)
+                foreach (RobertDeCaire_SavingsAccount cust in customerList)
                 {
                     index++;
                     Console.WriteLine("* {0, -2} * {1,-10} * {2,-10} * {3,-20} * {4, -10:c} * {5, -8:p} *", index, cust.LastName, cust.FirstName, cust.FullAddress, cust.Balance, cust.Interest);
@@ -733,7 +733,7 @@ namespace Assignment1
                 Console.WriteLine("Loading...\n");
                 try
                 {
-                    SaveAndLoad load = new SaveAndLoad("customer_list.sav");
+                    RobertDeCaire_SaveAndLoad load = new RobertDeCaire_SaveAndLoad("customer_list.sav");
                     customerList = load.Load();
                     Console.WriteLine("Load successful!\n");
                     
@@ -756,7 +756,7 @@ namespace Assignment1
                 Console.WriteLine("Saving...\n");
                 try
                 {
-                    SaveAndLoad save = new SaveAndLoad("customer_list.sav");
+                    RobertDeCaire_SaveAndLoad save = new RobertDeCaire_SaveAndLoad("customer_list.sav");
                     save.Save(customerList);
                     Console.WriteLine("Save successful!\n");
                 }
@@ -817,7 +817,7 @@ namespace Assignment1
                 while (!quit)
                 {                    
                     Console.Clear();
-                    SavingsAccount workingCustomer = customerList[custNumber-1];
+                    RobertDeCaire_SavingsAccount workingCustomer = customerList[custNumber-1];
                     displayCustomer(workingCustomer);
                     Console.WriteLine("");
                     Console.WriteLine("***********************************************");

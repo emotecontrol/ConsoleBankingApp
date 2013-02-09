@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace Assignment1
 {
-    class SavingsAccount
+    class RobertDeCaire_SavingsAccount
     {
         string firstName,
             lastName,
@@ -24,7 +24,7 @@ namespace Assignment1
             withdrawal,
             futureBalance;
 
-        public SavingsAccount()
+        public RobertDeCaire_SavingsAccount()
         {
             
              

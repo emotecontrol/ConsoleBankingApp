@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assignment1
 {
-    class StreetAddressConverter
+    class RobertDeCaire_StreetAddressConverter
     {
         // list of abbreviations adapted from:
         // https://www.usps.com/send/official-abbreviations.htm#2
@@ -296,7 +296,7 @@ namespace Assignment1
         };
         
         
-        public StreetAddressConverter()
+        public RobertDeCaire_StreetAddressConverter()
         {
            
         }
