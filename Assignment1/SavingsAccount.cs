@@ -14,10 +14,11 @@ namespace Assignment1
             streetType,
             rroute,
             rrStation,
+            phone,
             streetNumber;
         int socialInsurance;
-        double interest,
-            balance,
+        const double interest = 5.50;
+        double balance,
             deposit,
             oldBalance,
             withdrawal,
@@ -75,6 +76,17 @@ namespace Assignment1
                 streetType = value;
             }
         }
+        public string Phone
+        {
+            get
+            {
+                return phone;
+            }
+            set
+            {
+                phone = value;
+            }
+        }
         public int SIN
         {
             get
@@ -128,10 +140,7 @@ namespace Assignment1
             {
                 return interest;
             }
-            set
-            {
-                interest = value;
-            }
+            
         }
         public double Balance
         {
@@ -162,14 +171,8 @@ namespace Assignment1
             }
             set
             {
-                if (interest != 0) 
-                {
-                    futureBalance = value * Math.Pow((1 + interest / 12), 12);
-                }
-                else
-                {
-                    futureBalance = value;
-                }
+                futureBalance = value * Math.Pow((1 + interest / 12), 12);
+                
             }
         }
 

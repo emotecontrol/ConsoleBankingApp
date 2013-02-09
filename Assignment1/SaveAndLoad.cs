@@ -42,12 +42,12 @@ namespace Assignment1
             List<SavingsAccount> newlist;
             using (FileStream fs = File.Open(filename, FileMode.Open))
             {                
-                byte[] b = new byte[1024]; // make a byte array
+                byte[] b = new byte[1024]; // make a byte array to use as a buffer
                 UTF8Encoding temp = new UTF8Encoding(true); // make a UTF8 Encoding object
                 while (fs.Read(b, 0, b.Length) > 0) // while the buffer created by the FileStream is bigger than 0
                                                     // i.e. there are still characters in the stream...
                 {
-                    openAccountListJson += temp.GetString(b); // add the byte array to the list string in UTF8 encoding
+                    openAccountListJson += temp.GetString(b); // add the byte array to the Json string in UTF8 encoding
                 }
             }
             newlist = JsonConvert.DeserializeObject<List<SavingsAccount>>(openAccountListJson); // Deserialize the Json string to a List<SavingsAccount> object

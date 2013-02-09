@@ -7,6 +7,8 @@ using System.Globalization;
 
 namespace Assignment1
 {
+    // version 1.0 09/02/2013
+
     class SavingsInterface
     {
         
@@ -22,11 +24,8 @@ namespace Assignment1
             displayMenu();
         }
 
-        static SavingsAccount newCustomer()
+        static void setFirstName(SavingsAccount customer)
         {
-            SavingsAccount newCust = new SavingsAccount(); 
-            Console.WriteLine("Welcome to Customer Creation.\nTo create a new customer entry, please follow the instructions.\n");
-            
             bool first = false;
             string firstName = null;
             while (first == false)
@@ -35,8 +34,8 @@ namespace Assignment1
                 try
                 {
                     firstName = Console.ReadLine();
-                    newCust.FirstName = firstName.Trim();
-                    Console.Write("You entered {0}.  Is this correct? Y/N\n", newCust.FirstName);
+                    customer.FirstName = firstName.Trim();
+                    Console.Write("You entered {0}.  Is this correct? Y/N\n", customer.FirstName);
                     first = confirm();
                 }
                 finally
@@ -45,10 +44,15 @@ namespace Assignment1
                     {
                         Console.WriteLine("Unable to read input.  Please try again.");
                     }
-                    
+
                 }
-                
+
             }
+        }
+
+        static void setLastName(SavingsAccount customer)
+        {
+
             bool last = false;
             string lastName = null;
             while (last == false)
@@ -57,8 +61,8 @@ namespace Assignment1
                 try
                 {
                     lastName = Console.ReadLine();
-                    newCust.LastName = lastName.Trim();
-                    Console.Write("You entered {0}.  Is this correct? Y/N\n", newCust.LastName);
+                    customer.LastName = lastName.Trim();
+                    Console.Write("You entered {0}.  Is this correct? Y/N\n", customer.LastName);
                     last = confirm();
                 }
                 finally
@@ -69,25 +73,29 @@ namespace Assignment1
                     }
 
                 }
-                
+
             }
+        }
+
+        static void setAddress(SavingsAccount customer)
+        {
             bool strAddress = false;
             bool successInput = false;
-           
-            string addressInput=null;
+
+            string addressInput = null;
             string[] splitAddress = new string[3];
             string[] splitRR = new string[2];
-            
+
             while (strAddress == false)
             {
-                Console.WriteLine("Please enter the customer's street address.  Example: 34 Belmont Dr.");    
+                Console.WriteLine("Please enter the customer's street address.  Example: 34 Belmont Dr.");
                 try
                 {
-                    addressInput = Console.ReadLine(); 
+                    addressInput = Console.ReadLine();
                 }
                 finally
                 {
-                    
+
 
                     if (Regex.IsMatch(addressInput, @"[rR]\W?[rR]\W?.*\d"))  // test for a rural route address
                     {
@@ -99,13 +107,13 @@ namespace Assignment1
                                 && splitRR[0] != null && splitRR[1] != null)
                             {
                                 // Assign address parts to the SavingsAccount object
-                                newCust.StreetNumber = splitAddress[0];
-                                newCust.StreetName = splitAddress[1];
+                                customer.StreetNumber = splitAddress[0];
+                                customer.StreetName = splitAddress[1];
                                 StreetAddressConverter convert = new StreetAddressConverter();
 
-                                newCust.StreetType = convert.convertToAbbr(splitAddress[2]);
-                                newCust.Rroute = splitRR[0];
-                                newCust.RrStation = splitRR[1];
+                                customer.StreetType = convert.convertToAbbr(splitAddress[2]);
+                                customer.Rroute = splitRR[0];
+                                customer.RrStation = splitRR[1];
                                 successInput = true;
                             }
                             else
@@ -120,8 +128,8 @@ namespace Assignment1
                             {
                                 // Assign address parts to the SavingsAccount object
 
-                                newCust.Rroute = splitRR[0];
-                                newCust.RrStation = splitRR[1];
+                                customer.Rroute = splitRR[0];
+                                customer.RrStation = splitRR[1];
                                 successInput = true;
                             }
                             else
@@ -130,24 +138,24 @@ namespace Assignment1
                             }
 
                         }
-                         
+
                     }
                     else
                     {
                         //extract street address, divide into parts
                         splitAddress = parseAddress(addressInput);
-                        
-                        
+
+
                         if (splitAddress[0] != null && splitAddress[1] != null && splitAddress[2] != null)
                         {
-                            newCust.StreetNumber = splitAddress[0];
-                            newCust.StreetName = splitAddress[1];
-                            
+                            customer.StreetNumber = splitAddress[0];
+                            customer.StreetName = splitAddress[1];
+
                             StreetAddressConverter convert = new StreetAddressConverter();
-                            
+
                             string convertme = splitAddress[2];
                             string streetAbbr = convert.convertToAbbr(convertme);
-                            newCust.StreetType = streetAbbr;
+                            customer.StreetType = streetAbbr;
                             successInput = true;
                         }
                         else
@@ -155,58 +163,96 @@ namespace Assignment1
                             Console.WriteLine("There was a problem with your input.  Please try again.");
                         }
                     }
-                
-                    
+
+
                     if (successInput == false)
                     {
                         Console.WriteLine("No address was entered.  Please try again.");
                     }
-                    else if (newCust.Rroute == null) // there is no rr
+                    else if (customer.Rroute == null) // there is no rr
                     {
-                        Console.Write("\nYou entered {0} {1} {2}.  Is this correct? Y/N\n", newCust.StreetNumber, ti.ToTitleCase(newCust.StreetName), ti.ToTitleCase(newCust.StreetType));
+                        Console.Write("\nYou entered {0} {1} {2}.  Is this correct? Y/N\n", customer.StreetNumber, ti.ToTitleCase(customer.StreetName), ti.ToTitleCase(customer.StreetType));
                         strAddress = confirm();
                     }
-                    else if (newCust.StreetName == null) // there is no street address
+                    else if (customer.StreetName == null) // there is no street address
                     {
-                        Console.Write("\nYou entered {0} {1}.  Is this correct? Y/N\n", ti.ToTitleCase(newCust.Rroute), ti.ToTitleCase(newCust.RrStation));
+                        Console.Write("\nYou entered {0} {1}.  Is this correct? Y/N\n", ti.ToTitleCase(customer.Rroute), ti.ToTitleCase(customer.RrStation));
                         strAddress = confirm();
                     }
                     else // there is both a street address and a rr
                     {
-                        Console.Write("\nYou entered {0} {1} {2} {3} {4}.  Is this correct? Y/N\n", newCust.StreetNumber, ti.ToTitleCase(newCust.StreetName), ti.ToTitleCase(newCust.StreetType), ti.ToTitleCase(newCust.Rroute), ti.ToTitleCase(newCust.RrStation));
+                        Console.Write("\nYou entered {0} {1} {2} {3} {4}.  Is this correct? Y/N\n", customer.StreetNumber, ti.ToTitleCase(customer.StreetName), ti.ToTitleCase(customer.StreetType), ti.ToTitleCase(customer.Rroute), ti.ToTitleCase(customer.RrStation));
                         strAddress = confirm();
-                        
+
                     }
-                    
+
                 }
             }
+        }
 
-            string interestInput = null;
-            double setInterest;
-            bool isInterest = false;
-            while (isInterest == false)
-            { 
-                Console.WriteLine("Please enter the interest on this customer's account.");
+        static void setPhone(SavingsAccount customer)
+        {
+            string phoneInput = null;
+            string[] phoneArray = new string[3];
+            bool isPhone = false;
+            while (!isPhone)
+            {
+                Console.WriteLine("Please enter the customer's phone #");
                 try
                 {
-                    interestInput = Console.ReadLine();
+                    phoneInput = Console.ReadLine();
+                    Match match = Regex.Match(phoneInput, @"\(?\b([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})\b");
+                    if (match.Success)
+                    {
+                        phoneArray[0] = match.Groups[1].Value;
+                        phoneArray[1] = match.Groups[2].Value;
+                        phoneArray[2] = match.Groups[3].Value;
+                        customer.Phone = ("(" + phoneArray[0] + ") " + phoneArray[1] + " " + phoneArray[2]);
+                        Console.WriteLine("You entered ({0}) {1}-{2}.  Is that correct? Y/N", phoneArray[0], phoneArray[1], phoneArray[2]);
+                        isPhone = confirm();
+                    }
+                    else
+                    {
+                        Console.WriteLine("That is not a valid phone number. Please try again.");
+                    }
                 }
-                finally
+                catch
                 {
-                    double.TryParse(interestInput, out setInterest);
-                    setInterest = setInterest / 100;
-                    newCust.Interest = setInterest;
-                }
-                Console.Write("You entered {0:P}, is that correct? Y/N\n", setInterest);
-                isInterest = confirm();
+                    Console.WriteLine("Invalid input.  Please try again.");
 
+                }      
             }
-            
+        }
+        //static void setInterest(SavingsAccount customer)
+        //{
+        //    string interestInput = null;
+        //    double setInterest;
+        //    bool isInterest = false;
+        //    while (!isInterest)
+        //    { 
+        //        Console.WriteLine("Please enter the interest on this customer's account.");
+        //        try
+        //        {
+        //            interestInput = Console.ReadLine();
+        //        }
+        //        finally
+        //        {
+        //            double.TryParse(interestInput, out setInterest);
+        //            setInterest = setInterest / 100;
+        //            customer.Interest = setInterest;
+        //        }
+        //        Console.Write("You entered {0:P}, is that correct? Y/N\n", setInterest);
+        //        isInterest = confirm();
 
+        //    }
+        //}
+
+        static void setSIN(SavingsAccount customer)
+        {
             string sinInput = null;
             bool isSIN = false;
             bool unique = true;
-            
+
             int socialInsurance;
             while (isSIN == false || unique == false)
             {
@@ -233,26 +279,39 @@ namespace Assignment1
                                 unique = false;
                                 break;
                             }
-                            
-                                
-                            
+
+
+
                         }
-                        
+
                     }
                     else if (customerList.Count == 0)
                     {
                         unique = true;
                     }
-                    
+
 
                     if (unique)
                     {
-                        newCust.SIN = socialInsurance;
+                        customer.SIN = socialInsurance;
                         isSIN = true;
                     }
                 }
 
             }
+        }
+
+        static SavingsAccount newCustomer()
+        {
+            SavingsAccount newCust = new SavingsAccount(); 
+            Console.WriteLine("Welcome to Customer Creation.\nTo create a new customer entry, please follow the instructions.\n");
+            setFirstName(newCust);
+            setLastName(newCust);
+            setAddress(newCust);
+            setPhone(newCust);
+            
+            setOpeningBalance(newCust);
+            setSIN(newCust);
             Console.Write("Customer created successfully.  Press any key to return to the menu...");
             Console.ReadKey();
             return newCust;
@@ -261,7 +320,6 @@ namespace Assignment1
         static void removeCustomer()
         {
             int custNumber = 0;
-
             showCustomers(true);
             Console.WriteLine("\nPlease choose a customer to delete.");
             Console.WriteLine("Warning!  This cannot be undone!");
@@ -281,20 +339,19 @@ namespace Assignment1
         {
             bool leaveMenu = false;
             while (!leaveMenu)
-            {
-            
+            {            
                 Console.Clear();
-                Console.WriteLine("**********************************************");
-                Console.WriteLine("*       Welcome to George Brown Banking      *");
-                Console.WriteLine("*       Branch Manager: Robert DeCaire       *");
-                Console.WriteLine("**********************************************");
-                Console.WriteLine("*           Please Choose An Option          *");
-                Console.WriteLine("**********************************************");
-                Console.WriteLine("* (C)reate a customer * (M)odify a customer  *");
-                Console.WriteLine("* (R)emove a customer * (S)how customers     *");
-                Console.WriteLine("* (D)eposit funds     * (W)ithdraw funds     *");
-                Console.WriteLine("* (L)oad customers    * Save and (Q)uit      *");    
-                Console.WriteLine("**********************************************");
+                Console.WriteLine("*********************************************");
+                Console.WriteLine("*      Welcome to George Brown Banking      *");
+                Console.WriteLine("*      Branch Manager: Robert DeCaire       *");
+                Console.WriteLine("*********************************************");
+                Console.WriteLine("*          Please Choose An Option          *");
+                Console.WriteLine("*********************************************");
+                Console.WriteLine("* (C)reate a customer * (M)odify a customer *");
+                Console.WriteLine("* (R)emove a customer * (S)how customers    *");
+                Console.WriteLine("* (D)eposit funds     * (W)ithdraw funds    *");
+                Console.WriteLine("* (L)oad customers    * Save and (Q)uit     *");    
+                Console.WriteLine("*********************************************");
                 string choice = getMenuChoice();
                 switch (choice)
                 {
@@ -305,18 +362,16 @@ namespace Assignment1
                         break;
                     case "m":
                         Console.Clear();
-                    //    modifyCustomer();
-                        
+                        modifyCustomer();
+                        customerList.Sort(compareByLastName);
                         break;
                     case "r":
                         Console.Clear();
                         removeCustomer();
-                        
                         break;
                     case "s":
                         Console.Clear();
                         showCustomers(false);
-                        
                         break;
                     case "d":
                         Console.Clear();
@@ -337,8 +392,7 @@ namespace Assignment1
                         break;
                     case "q":
                         Console.Clear();
-                        bool quit = saveAndQuit();
-                        if (quit)
+                        if (saveAndQuit())
                         {
                             leaveMenu = true;
                         }
@@ -397,7 +451,6 @@ namespace Assignment1
             {
             }
             
-           
             if (strChoice != null)
             {
                 strChoice = strChoice.ToLower();
@@ -411,8 +464,7 @@ namespace Assignment1
 
         public static string[] parseAddress(string address) // address is an address of the type "36 Blueberry Lane"
         {
-            string[] addressArray = new string[3];
-            
+            string[] addressArray = new string[3];            
             address = address.ToLower();
             Match match = Regex.Match(address, @"([-\d]+) ([\w ']+) (\w+)(?= [rR]\W?[rR]\W?\d|\.)|([-\d]+) ([\w ']+) (\w+)");
             if (match.Success)
@@ -428,14 +480,10 @@ namespace Assignment1
                 {
                     addressArray[0] = match.Groups[4].Value;
                     addressArray[1] = match.Groups[5].Value;
-                    addressArray[2] = match.Groups[6].Value;
-                    
-                }
-                
-
+                    addressArray[2] = match.Groups[6].Value;                    
+                }                
             }
-            return addressArray;
-            
+            return addressArray;            
         }
 
         public static string[] parseRR(string address) // address is an address of the type "RR 5 Station Main"
@@ -450,8 +498,7 @@ namespace Assignment1
                 addressArray[1] = match.Groups[2].Value;
                 
             }
-            return addressArray;
-            
+            return addressArray;            
         }
 
         static void depositFunds()
@@ -480,36 +527,51 @@ namespace Assignment1
                         currentCust = customerList[custIndex - 1];
                         Console.Clear();
                         displayCustomer(currentCust);
-                        bool gotDeposit = false;
-                        double deposit;
-                        while (!gotDeposit)
-                        {
-                            Console.WriteLine("How much would you like to deposit?");
-                            string depositInput = Console.ReadLine();
-                            gotDeposit = double.TryParse(depositInput, out deposit);
-                            if (!gotDeposit)
-                            {
-                                Console.WriteLine("That is not a valid value.  Please try again.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("You entered {0:c}.  Is this correct? Y/N", deposit);
-                                bool depositCorrect = confirm();
-                                if (!depositCorrect)
-                                {
-                                    gotDeposit = false;
-                                }
-                                else
-                                {
-                                    currentCust.makeDeposit(deposit);
-                                    currentCust.updateBalance();
-                                    Console.WriteLine("Deposit made successfully.");
-                                    Console.WriteLine("The current balance in this account is {0:C}.", currentCust.Balance);
-                                    Console.WriteLine("The balance in 1 year, compounded monthly at {0:p} will be {1:C}", currentCust.Interest, currentCust.FutureBalance);
-                                }
-                            }
-                        }
+                        
+                        Console.WriteLine("How much would you like to deposit?");
+                        addFunds(currentCust);
+                        Console.WriteLine("Deposit made successfully.");
+                        Console.WriteLine("The current balance in this account is {0:C}.", currentCust.Balance);
+                        Console.WriteLine("The balance in 1 year, compounded monthly at {0:p} will be {1:C}", currentCust.Interest, currentCust.FutureBalance);
                         quitNow = true;                        
+                    }
+                }
+            }
+        }
+
+        static void setOpeningBalance(SavingsAccount customer)
+        {
+            Console.WriteLine("Please enter the customer's opening balance.");
+            addFunds(customer);
+        }
+
+        static void addFunds(SavingsAccount currentCust)
+        {
+            bool quitNow = false;
+            while (!quitNow)
+            {
+                string depositInput = Console.ReadLine();
+                double deposit;
+                bool gotDeposit = double.TryParse(depositInput, out deposit);
+
+                if (!gotDeposit)
+                {
+                    Console.WriteLine("That is not a valid value.  Please try again.");
+                }
+                else
+                {
+                    Console.WriteLine("You entered {0:c}.  Is this correct? Y/N", deposit);
+                    bool depositCorrect = confirm();
+                    if (!depositCorrect)
+                    {
+                        gotDeposit = false;
+                    }
+                    else
+                    {
+                        currentCust.makeDeposit(deposit);
+                        currentCust.updateBalance();
+                        
+                        quitNow = true;
                     }
                 }
             }
@@ -595,9 +657,9 @@ namespace Assignment1
             Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -23} *", cust.LastName, cust.FirstName, cust.SIN, cust.FullAddress);
             Console.WriteLine("*****************************************************************");
             
-            Console.WriteLine("* {0, -15} * {1, -17} * {2,-24}*", "Balance", "Interest", "1 Year Balance");
-            Console.WriteLine("* {0, -15} * {1, -17} * {2, 24}*", "", "", "");
-            Console.WriteLine("* {0, -15:c} * {1, -17:p2} * {2,-24:c}*", cust.Balance, cust.Interest, cust.FutureBalance);
+            Console.WriteLine("* {0,-14} * {1, -7} * {2, -8} * {3,-24}*", "Phone #", "Balance", "Interest", "Balance After 1 Year");
+            Console.WriteLine("* {0,-14} * {1, -7} * {2, -8} * {3, 24}*", "","", "", "");
+            Console.WriteLine("* {0,-14} * {1, -7:c} * {2, -8:p2} * {3,-24:c}*", cust.Phone, cust.Balance, cust.Interest, cust.FutureBalance);
             Console.WriteLine("*****************************************************************");
         }
 
@@ -625,19 +687,19 @@ namespace Assignment1
         {
             if (customerList.Count > 0)
             {
-                Console.WriteLine("****************************************************************************");
-                Console.WriteLine("*                           Customer Information                           *");
-                Console.WriteLine("****************************************************************************");
-                Console.WriteLine("* {0,-2} * {1,-10} * {2,-10} * {3,-20} * {4, -7} * {5, -5} *", "#" , "Last Name", "First Name", "Address", "Balance", "Interest");
-                Console.WriteLine("****************************************************************************");
+                Console.WriteLine("*******************************************************************************");
+                Console.WriteLine("*                             Customer Information                            *");
+                Console.WriteLine("*******************************************************************************");
+                Console.WriteLine("* {0,-2} * {1,-10} * {2,-10} * {3,-20} * {4, -10} * {5, -5} *", "#" , "Last Name", "First Name", "Address", "Balance", "Interest");
+                Console.WriteLine("*******************************************************************************");
 
                 int custNumber = 0;
                 int index = 0;
                 foreach (SavingsAccount cust in customerList)
                 {
                     index++;
-                    Console.WriteLine("* {0, -2} * {1,-10} * {2,-10} * {3,-20} * {4, -7:c} * {5, -8:p} *", index, cust.LastName, cust.FirstName, cust.FullAddress, cust.Balance, cust.Interest);
-                    Console.WriteLine("****************************************************************************");
+                    Console.WriteLine("* {0, -2} * {1,-10} * {2,-10} * {3,-20} * {4, -10:c} * {5, -8:p} *", index, cust.LastName, cust.FirstName, cust.FullAddress, cust.Balance, cust.Interest);
+                    Console.WriteLine("*******************************************************************************");
                 }
                 if (!justDisplay)
                 {
@@ -665,7 +727,7 @@ namespace Assignment1
         static void loadCustomers()
         {
             
-            Console.WriteLine("Are you sure you want to load a saved customer list? This will delete the current list. Y/N");
+            Console.WriteLine("Are you sure you want to load a saved customer list?\nThis will delete the current list. Y/N");
             if (confirm())
             {
                 Console.WriteLine("Loading...\n");
@@ -732,5 +794,78 @@ namespace Assignment1
             }
             return confirmation;
         }
+
+        static void modifyCustomer()
+        {
+            if (customerList.Count == 0)
+            {
+                Console.WriteLine("There are no customers in the system.\nPlease create a customer or load saved customers.\n");
+            }
+            else
+            {
+
+                int custNumber = 0;
+                bool quit = true;
+                showCustomers(true);
+                Console.WriteLine("\nPlease choose the customer you would like to modify.");
+                Console.WriteLine("Otherwise hit 'Return' to return to the menu.");
+                bool gotNumber = int.TryParse(Console.ReadLine(), out custNumber);
+                if (gotNumber && custNumber > 0 && custNumber <= customerList.Count)
+                {
+                    quit = false;
+                }
+                while (!quit)
+                {                    
+                    Console.Clear();
+                    SavingsAccount workingCustomer = customerList[custNumber-1];
+                    displayCustomer(workingCustomer);
+                    Console.WriteLine("");
+                    Console.WriteLine("***********************************************");
+                    Console.WriteLine("*           Please Select an Option           *");
+                    Console.WriteLine("***********************************************");
+                    Console.WriteLine("* Change (F)irst Name   * Change (L)ast Name  *");
+                    Console.WriteLine("* Change (A)ddress      * Change (P)hone      *");
+                    Console.WriteLine("* Change (S)IN          * (R)eturn to Menu    *");                    
+                    Console.WriteLine("***********************************************");
+                    string choice = getMenuChoice();
+                    switch (choice)
+                    {
+                        case "f":
+                            setFirstName(workingCustomer);
+                            Console.WriteLine("First name changed successfully. Hit any key to continue.");
+                            Console.ReadKey();
+                            break;
+                        case "l":
+                            setLastName(workingCustomer);
+                            Console.WriteLine("Last name changed successfully. Hit any key to continue.");
+                            Console.ReadKey();
+                            break;
+                        case "a":
+                            setAddress(workingCustomer);
+                            Console.WriteLine("Address changed successfully. Hit any key to continue.");
+                            Console.ReadKey();
+                            break;
+                        
+                        case "s":
+                            setSIN(workingCustomer);
+                            Console.WriteLine("First name changed successfully. Hit any key to continue.");
+                            Console.ReadKey();
+                            break;
+                        case "p":
+                            setPhone(workingCustomer);
+                            Console.WriteLine("Phone number changed successfully. Hit any key to continue.");
+                            Console.ReadKey();
+                            break;
+                        case "r":
+                            quit = true;
+                            break;
+                        default:
+                            break;
+                    }
+                    
+                }
+            }
+        }
+
     }
 }
