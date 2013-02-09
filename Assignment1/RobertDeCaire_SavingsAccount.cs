@@ -171,7 +171,7 @@ namespace Assignment1
             }
             set
             {
-                futureBalance = value * Math.Pow((1 + interest / 12), 12);
+                futureBalance = value;
                 
             }
         }
@@ -195,7 +195,7 @@ namespace Assignment1
         {
             oldBalance = balance;
             balance += (deposit + withdrawal);
-            this.FutureBalance = balance;
+            this.FutureBalance = balance * Math.Pow((1 + interest / 12), 12);
             deposit = 0;
             withdrawal = 0;
             

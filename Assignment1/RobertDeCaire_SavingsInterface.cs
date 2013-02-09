@@ -223,30 +223,7 @@ namespace Assignment1
                 }      
             }
         }
-        //static void setInterest(SavingsAccount customer)
-        //{
-        //    string interestInput = null;
-        //    double setInterest;
-        //    bool isInterest = false;
-        //    while (!isInterest)
-        //    { 
-        //        Console.WriteLine("Please enter the interest on this customer's account.");
-        //        try
-        //        {
-        //            interestInput = Console.ReadLine();
-        //        }
-        //        finally
-        //        {
-        //            double.TryParse(interestInput, out setInterest);
-        //            setInterest = setInterest / 100;
-        //            customer.Interest = setInterest;
-        //        }
-        //        Console.Write("You entered {0:P}, is that correct? Y/N\n", setInterest);
-        //        isInterest = confirm();
-
-        //    }
-        //}
-
+        
         static void setSIN(RobertDeCaire_SavingsAccount customer)
         {
             string sinInput = null;
@@ -510,17 +487,20 @@ namespace Assignment1
             else
             {
                 RobertDeCaire_SavingsAccount currentCust = new RobertDeCaire_SavingsAccount();
+                showCustomers(true);
                 bool quitNow = false;
                 while (!quitNow)
                 {
 
-                    showCustomers(true);
+                    
                     Console.WriteLine("Please choose the account to which you would like to make a deposit.");
                     int custIndex = inputIndex();
                     if (custIndex < 1 || custIndex > customerList.Count)
                     {
                         Console.Clear();
+                        showCustomers(true);
                         Console.WriteLine("That is not a valid customer.  Please try again.\n");
+                        
                     }
                     else
                     {
@@ -586,17 +566,20 @@ namespace Assignment1
             else
             {
                 RobertDeCaire_SavingsAccount currentCust = new RobertDeCaire_SavingsAccount();
+                showCustomers(true);
                 bool quitNow = false;
                 while (!quitNow)
                 {
                     
-                    showCustomers(true);
+                    
                     Console.WriteLine("Please choose the account from which you would like to make a withdrawal.");
                     int custIndex = inputIndex();
                     if (custIndex < 1 || custIndex > customerList.Count)
                     {
                         Console.Clear();
+                        showCustomers(true);
                         Console.WriteLine("That is not a valid customer.  Please try again.\n");
+
                     }
                     else if (customerList[custIndex - 1].Balance == 0)
                     {
@@ -657,9 +640,9 @@ namespace Assignment1
             Console.WriteLine("* {0, -10} * {1, -10} * {2, -9} * {3, -23} *", cust.LastName, cust.FirstName, cust.SIN, cust.FullAddress);
             Console.WriteLine("*****************************************************************");
             
-            Console.WriteLine("* {0,-14} * {1, -7} * {2, -8} * {3,-24}*", "Phone #", "Balance", "Interest", "Balance After 1 Year");
-            Console.WriteLine("* {0,-14} * {1, -7} * {2, -8} * {3, 24}*", "","", "", "");
-            Console.WriteLine("* {0,-14} * {1, -7:c} * {2, -8:p2} * {3,-24:c}*", cust.Phone, cust.Balance, cust.Interest, cust.FutureBalance);
+            Console.WriteLine("* {0,-14} * {1, -10} * {2, -8} * {3,-21}*", "Phone #", "Balance", "Interest", "Closing Balance");
+            Console.WriteLine("* {0,-14} * {1, -10} * {2, -8} * {3, 21}*", "","", "", "");
+            Console.WriteLine("* {0,-14} * {1, -10:c} * {2, -8:p2} * {3,-21:c}*", cust.Phone, cust.Balance, cust.Interest, cust.FutureBalance);
             Console.WriteLine("*****************************************************************");
         }
 
@@ -685,12 +668,13 @@ namespace Assignment1
 
         static void showCustomers(bool justDisplay)
         {
+           
             if (customerList.Count > 0)
             {
                 Console.WriteLine("*******************************************************************************");
                 Console.WriteLine("*                             Customer Information                            *");
                 Console.WriteLine("*******************************************************************************");
-                Console.WriteLine("* {0,-2} * {1,-10} * {2,-10} * {3,-20} * {4, -10} * {5, -5} *", "#" , "Last Name", "First Name", "Address", "Balance", "Interest");
+                Console.WriteLine("* {0,-2} * {1,-10} * {2,-10} * {3,-26} * {4, -15} *", "#", "Last Name", "First Name", "Address", "Balance");
                 Console.WriteLine("*******************************************************************************");
 
                 int custNumber = 0;
@@ -698,20 +682,32 @@ namespace Assignment1
                 foreach (RobertDeCaire_SavingsAccount cust in customerList)
                 {
                     index++;
-                    Console.WriteLine("* {0, -2} * {1,-10} * {2,-10} * {3,-20} * {4, -10:c} * {5, -8:p} *", index, cust.LastName, cust.FirstName, cust.FullAddress, cust.Balance, cust.Interest);
+                    Console.WriteLine("* {0, -2} * {1,-10} * {2,-10} * {3,-26} * {4, -15:c} *", index, cust.LastName, cust.FirstName, cust.FullAddress, cust.Balance);
                     Console.WriteLine("*******************************************************************************");
                 }
                 if (!justDisplay)
                 {
-                    Console.WriteLine("\nTo view more details of a customer, enter that customer's number.");
-                    Console.WriteLine("Otherwise hit 'Return' to return to the menu.");
-                    bool gotNumber = int.TryParse(Console.ReadLine(), out custNumber);
-                    if (gotNumber && custNumber > 0 && custNumber <= customerList.Count)
+                    bool quit = false;
+                    while (!quit)
                     {
-                        Console.Clear();
-                        displayCustomer(customerList[custNumber - 1]);
-                        Console.WriteLine("Press any key to return to the menu...");
-                        Console.ReadKey();
+                        Console.WriteLine("\nTo view more details of a customer, enter that customer's number.");
+                        Console.WriteLine("Otherwise hit 'Return' to return to the menu.");
+                        bool gotNumber = int.TryParse(Console.ReadLine(), out custNumber);
+                        if (gotNumber && custNumber > 0 && custNumber <= customerList.Count)
+                        {
+                            Console.Clear();
+                            displayCustomer(customerList[custNumber - 1]);
+                            Console.WriteLine("Press any key to return to the menu...");
+                            Console.ReadKey();
+                            quit = true;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            showCustomers(true);
+                            Console.WriteLine("That is not a valid customer.  Please try again.\n");
+
+                        }
                     }
                 }
             }
@@ -720,6 +716,7 @@ namespace Assignment1
                 Console.WriteLine("There are no customers in the system.\nPlease create a customer or load saved customers.\n");
                 Console.WriteLine("Press any key to return to the menu...");
                 Console.ReadKey();
+                
             }
             
         }
