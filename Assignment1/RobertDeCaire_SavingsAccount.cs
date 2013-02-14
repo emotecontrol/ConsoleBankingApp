@@ -8,29 +8,27 @@ namespace Assignment1
 {
     class RobertDeCaire_SavingsAccount
     {
-        string firstName,
+        private string firstName,
             lastName,
             streetName,
             streetType,
             rroute,
             rrStation,
             phone,
+            city,
+            postal,
             streetNumber;
-        int socialInsurance;
-        const double interest = 0.055;
-        double balance,
+        private int socialInsurance;
+        const double INTEREST = 0.055;
+        private double balance,
             deposit,
             oldBalance,
             withdrawal,
             futureBalance;
 
         public RobertDeCaire_SavingsAccount()
-        {
-            
-             
+        {                         
         }
-
-        
 
         public string FirstName
         {
@@ -43,6 +41,7 @@ namespace Assignment1
                 firstName = value;
             }
         }
+        
         public string LastName
         {
             get
@@ -54,6 +53,7 @@ namespace Assignment1
                 lastName = value;
             }
         }
+        
         public string StreetName
         {
             get
@@ -65,6 +65,7 @@ namespace Assignment1
                 streetName = value;
             }
         }
+        
         public string StreetType
         {
             get
@@ -76,6 +77,32 @@ namespace Assignment1
                 streetType = value;
             }
         }
+
+        public string City
+        {
+            get
+            {
+                return city;
+            }
+            set
+            {
+                city = value;
+            }
+        }
+
+        public string Postal
+        {
+            get
+            {
+                return postal;
+            }
+            set
+            {
+                postal = value;
+            }
+        }
+
+
         public string Phone
         {
             get
@@ -87,6 +114,7 @@ namespace Assignment1
                 phone = value;
             }
         }
+
         public int SIN
         {
             get
@@ -98,6 +126,7 @@ namespace Assignment1
                 socialInsurance = value;
             }
         }
+
         public string StreetNumber
         {
             get
@@ -138,10 +167,11 @@ namespace Assignment1
         {
             get
             {
-                return interest;
+                return INTEREST;
             }
             
         }
+
         public double Balance
         {
             get
@@ -152,7 +182,7 @@ namespace Assignment1
             {
                 balance = value;
             }
-        }
+        }      
 
         public string FullAddress
         {
@@ -176,7 +206,6 @@ namespace Assignment1
             }
         }
 
-
         public void makeDeposit(double newDeposit)
         {
             deposit += newDeposit;
@@ -195,7 +224,7 @@ namespace Assignment1
         {
             oldBalance = balance;
             balance += (deposit + withdrawal);
-            this.FutureBalance = balance * Math.Pow((1 + interest / 12), 12);
+            this.FutureBalance = balance * Math.Pow((1 + INTEREST / 12), 12);
             deposit = 0;
             withdrawal = 0;
             
