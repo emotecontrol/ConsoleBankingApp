@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace Assignment1
 {
-    // version 1.0 09/02/2013
+    // version 1.01 09/02/2013
 
     class SavingsInterface
     {
@@ -734,7 +734,7 @@ namespace Assignment1
                 try
                 {
                     SaveAndLoad load = new SaveAndLoad("customer_list.sav");
-                    customerList = load.Load();
+                    customerList = load.Load<SavingsAccount>();
                     Console.WriteLine("Load successful!\n");
                     
                 }
@@ -757,7 +757,7 @@ namespace Assignment1
                 try
                 {
                     SaveAndLoad save = new SaveAndLoad("customer_list.sav");
-                    save.Save(customerList);
+                    save.Save<SavingsAccount>(customerList);
                     Console.WriteLine("Save successful!\n");
                 }
                 catch
