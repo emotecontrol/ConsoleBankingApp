@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +7,7 @@ using System.IO;
 
 // This save/load module uses the Newtonsoft Json library (http://james.newtonking.com/projects/json-net.aspx)
 // to serialize and deserialize the SavingsAccount objects into Json text, and back into objects again.
-// I seriously recommend everyone learn to use this library, because it's a heck of a lot easier and quicker 
-// than trying to serialize anything into XML.
+
 
 namespace Assignment1
 {
@@ -22,9 +21,9 @@ namespace Assignment1
 
         // the follewing I/O section is based on some msdn tutorials I found for reading/writing 
         // data, particularly: http://msdn.microsoft.com/en-us/library/system.io.filestream.aspx
+
         
-        
-        public void Save(List<SavingsAccount> listToSave){
+        public void Save<T>(List<T> listToSave){
             if (File.Exists(filename))
             {
                 File.Delete(filename);
@@ -36,10 +35,10 @@ namespace Assignment1
             }
         }
         
-        public List<SavingsAccount> Load()
+        public List<T> Load<T>()
         {
             string openAccountListJson = null;
-            List<SavingsAccount> newlist;
+            List<T> newlist;
             using (FileStream fs = File.Open(filename, FileMode.Open))
             {                
                 byte[] b = new byte[1024]; // make a byte array to use as a buffer
@@ -50,7 +49,7 @@ namespace Assignment1
                     openAccountListJson += temp.GetString(b); // add the byte array to the Json string in UTF8 encoding
                 }
             }
-            newlist = JsonConvert.DeserializeObject<List<SavingsAccount>>(openAccountListJson); // Deserialize the Json string to a List<SavingsAccount> object
+            newlist = JsonConvert.DeserializeObject<List<T>>(openAccountListJson); // Deserialize the Json string to a List<SavingsAccount> object
             return newlist;
         }
         
